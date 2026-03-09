@@ -1,0 +1,95 @@
+<div class="edit-page-container">
+  <div class="background-decor blur-1"></div>
+  <div class="background-decor blur-2"></div>
+
+  <div class="edit-card">
+    @if (isLoading()) {
+      <div class="form-loading-overlay">
+        <div class="loader"></div>
+        <p>Creating your product...</p>
+      </div>
+    }
+
+    <div class="card-header">
+      <button class="btn-back" (click)="goBack()">
+        <span class="icon">←</span> Back
+      </button>
+      <h2>Add New <span>Product</span></h2>
+      <p class="subtitle">Enter the details to create a premium item</p>
+    </div>
+
+    <form class="edit-form" [formGroup]="productInfo" (ngSubmit)="onSubmit()">
+      <div class="input-grid">
+        <div class="form-group" [class.invalid]="isFieldInvalid('productName')">
+          <label for="name">Product Name</label>
+          <div class="input-wrapper" [class.invalid-wrapper]="isFieldInvalid('productName')">
+            <span class="field-icon">📦</span>
+            <input type="text" id="name" formControlName="productName" placeholder="Enter product name">
+          </div>
+          @if (isFieldInvalid('productName')) {
+            <span class="error-message">{{ getErrorMessage('productName', 'Product Name') }}</span>
+          }
+        </div>
+
+        <div class="form-group" [class.invalid]="isFieldInvalid('price')">
+          <label for="price">Price (₹)</label>
+          <div class="input-wrapper" [class.invalid-wrapper]="isFieldInvalid('price')">
+            <span class="field-icon">💰</span>
+            <input type="number" id="price" formControlName="price" placeholder="0.00">
+          </div>
+          @if (isFieldInvalid('price')) {
+            <span class="error-message">{{ getErrorMessage('price', 'Price') }}</span>
+          }
+        </div>
+
+        <div class="form-group" [class.invalid]="isFieldInvalid('rating')">
+          <label for="rating">Rating (1-5)</label>
+          <div class="input-wrapper" [class.invalid-wrapper]="isFieldInvalid('rating')">
+            <span class="field-icon">⭐</span>
+            <input type="number" id="rating" step="0.1" min="1" max="5" formControlName="rating">
+          </div>
+          @if (isFieldInvalid('rating')) {
+            <span class="error-message">{{ getErrorMessage('rating', 'Rating') }}</span>
+          }
+        </div>
+
+        <div class="form-group" [class.invalid]="isFieldInvalid('category')">
+          <label for="category">Category</label>
+          <div class="input-wrapper" [class.invalid-wrapper]="isFieldInvalid('category')">
+            <span class="field-icon">🏷️</span>
+            <input type="text" id="category" formControlName="category" placeholder="e.g. Accessories">
+          </div>
+          @if (isFieldInvalid('category')) {
+            <span class="error-message">{{ getErrorMessage('category', 'Category') }}</span>
+          }
+        </div>
+      </div>
+
+      <div class="form-group full-width" [class.invalid]="isFieldInvalid('imageUrl')">
+        <label for="imageUrl">Image URL</label>
+        <div class="input-wrapper" [class.invalid-wrapper]="isFieldInvalid('imageUrl')">
+          <span class="field-icon">🖼️</span>
+          <input type="text" id="imageUrl" formControlName="imageUrl" placeholder="https://example.com/image.jpg">
+        </div>
+        @if (isFieldInvalid('imageUrl')) {
+          <span class="error-message">{{ getErrorMessage('imageUrl', 'Image URL') }}</span>
+        }
+      </div>
+
+      <div class="form-group full-width" [class.invalid]="isFieldInvalid('description')">
+        <label for="description">Description</label>
+        <div class="input-wrapper" [class.invalid-wrapper]="isFieldInvalid('description')">
+          <textarea id="description" rows="4" formControlName="description" placeholder="Describe the product experience..."></textarea>
+        </div>
+        @if (isFieldInvalid('description')) {
+          <span class="error-message">{{ getErrorMessage('description', 'Description') }}</span>
+        }
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="goBack()">Cancel</button>
+        <button type="submit" class="btn-primary" [disabled]="isLoading()">Create Product</button>
+      </div>
+    </form>
+  </div>
+</div>

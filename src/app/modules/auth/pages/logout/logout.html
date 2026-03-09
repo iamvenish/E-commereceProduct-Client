@@ -1,0 +1,29 @@
+<div class="logout-screen">
+  <div class="logout-card">
+    <ng-container *ngIf="!isError(); else errorState">
+      <div class="loader-container">
+        <div class="premium-loader"></div>
+        <div class="inner-glow"></div>
+      </div>
+      <h1 class="logout-title">Signing Out</h1>
+      <p class="logout-subtitle">Securely clearing your session...</p>
+    </ng-container>
+
+    <ng-template #errorState>
+      <div class="error-icon-container">
+        <span class="material-icons error-icon">error_outline</span>
+      </div>
+      <h1 class="logout-title">Logout Failed</h1>
+      <p class="logout-subtitle">{{ errorMessage() }}</p>
+      <div class="action-buttons">
+        <button class="btn-retry" (click)="performLogout()">Retry Logout</button>
+        <button class="btn-force" (click)="forceLogout()">Logout Anyway</button>
+      </div>
+    </ng-template>
+    
+    <div class="security-badge">
+      <span class="material-icons">security</span>
+      <span>Encrypted Session Management</span>
+    </div>
+  </div>
+</div>

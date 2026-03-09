@@ -1,0 +1,62 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="logo">⚡</div>
+      <h1>Welcome Back</h1>
+      <p>Please enter your details to sign in</p>
+    </div>
+
+    @if (errorMessage()) {
+      <div class="global-error">
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <form [formGroup]="userLoginInfo" (ngSubmit)="UserData()">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <div class="input-wrapper">
+          <input 
+            type="email" 
+            id="email"
+            formControlName="email" 
+            placeholder="name@company.com"
+            [class.invalid]="userLoginInfo.get('email')?.invalid && userLoginInfo.get('email')?.touched"
+          >
+        </div>
+        @if (userLoginInfo.get('email')?.invalid && userLoginInfo.get('email')?.touched) {
+          <span class="error-hint">Please enter a valid email address</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          <input 
+            type="password" 
+            id="password"
+            formControlName="password" 
+            placeholder="••••••••"
+            [class.invalid]="userLoginInfo.get('password')?.invalid && userLoginInfo.get('password')?.touched"
+          >
+        </div>
+        @if (userLoginInfo.get('password')?.invalid && userLoginInfo.get('password')?.touched) {
+          <span class="error-hint">Password must be at least 6 characters</span>
+        }
+      </div>
+
+      <button type="submit" class="btn-login" [disabled]="isLoading()">
+        @if (isLoading()) {
+          <div class="loader"></div>
+          Signing in...
+        } @else {
+          Sign In
+        }
+      </button>
+    </form>
+
+    <div class="footer-links">
+      <p>Don't have an account? <a href="#">Create one</a></p>
+    </div>
+  </div>
+</div>

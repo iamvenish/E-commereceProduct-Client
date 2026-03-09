@@ -1,0 +1,14 @@
+@use '../product-edit/product-edit.scss' as *;
+
+// We can reuse the same styles as product-edit since the UI structure is identical
+.edit-card {
+  border-top: 4px solid #3b82f6; // Distinct color for "Add"
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  
+  &:hover:not(:disabled) {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+  }
+}

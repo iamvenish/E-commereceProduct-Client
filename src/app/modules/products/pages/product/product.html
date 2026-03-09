@@ -1,0 +1,110 @@
+<div class="page-wrapper">
+    <header class="main-header">
+        <div class="header-content">
+            <div class="brand">
+                <div class="logo-orb"></div>
+                <h1>Premium <span>Store</span></h1>
+            </div>
+
+            <div class="header-right">
+                <div class="user-profile">
+                    <div class="profile-info">
+                        <span class="user-name">{{ userData()?.firstName || 'User' }}</span>
+                        <span class="user-role">{{ userData()?.role || 'Member' }}</span>
+                    </div>
+                    <div class="avatar-circle">
+                        {{ getUserInitial() }}
+                    </div>
+                </div>
+
+                <div class="actions-group">
+                    <button class="icon-btn" (click)="productInfo()" [disabled]="isLoading()" title="Refresh Inventory">
+                        <span class="material-icons">refresh</span>
+                    </button>
+                    <button class="btn-add-new" (click)="onAdd()">
+                        <span class="material-icons">add_circle</span>
+                        <span>New Product</span>
+                    </button>
+                    <button class="logout-pill" (click)="onLogout()">
+                        <span class="material-icons">logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container main-content">
+        <div class="catalog-info">
+            <h2>Our Collection <span>({{ productDetails().length }} items)</span></h2>
+            <p>Discover our range of premium selection and exclusive products.</p>
+        </div>
+
+        @if (isLoading()) {
+        <div class="loading-state">
+            <div class="skeleton-grid">
+                @for (i of [1,2,3,4]; track i) {
+                <div class="skeleton-card"></div>
+                }
+            </div>
+        </div>
+        }
+
+        <div class="product-grid">
+            @for(item of productDetails(); track item.id || item.productName || $index) {
+            <div class="product-card">
+                <div class="card-actions">
+                    <button class="action-btn edit" (click)="onEdit(item)" title="Edit Product">
+                        <span class="action-icon">✎</span>
+                    </button>
+                    <button class="action-btn delete" (click)="onDelete(item)" title="Delete Product">
+                        <span class="action-icon">×</span>
+                    </button>
+                </div>
+                <div class="card-badge">Top Seller</div>
+                <div class="img-wrapper">
+                    <img [src]="item.imageUrl || 'https://via.placeholder.com/300x200?text=No+Image'"
+                        [alt]="item.productName" />
+                    <div class="img-overlay">
+                        <button class="btn-quickview">Quick View</button>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div class="info-top">
+                        <span class="category">{{ item.category || 'Premium Gear' }}</span>
+                        <span class="rating">
+                            <i>★</i> {{ item.rating || '4.5' }}
+                        </span>
+                    </div>
+                    <h3>{{ item.productName || 'Unnamed Product' }}</h3>
+                    <p class="description">{{ item.description || 'No description available for this product.' }}</p>
+                    <div class="meta">
+                        <span class="price">{{ item.price || '0.00' }}</span>
+                        <button class="btn-add" (click)="onAddToCart(item)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            } @empty {
+            @if (!isLoading()) {
+            <div class="no-products">
+                <div class="empty-icon">📦</div>
+                <h3>Nothing to show yet</h3>
+                <p>We couldn't find any products. Try refreshing to see the latest collection.</p>
+                <button class="btn-refresh" (click)="productInfo()">
+                     <span class="icon">↺</span> Retry Refresh
+                </button>
+            </div>
+            }
+            }
+        </div>
+    </div>
+
+    <!-- Premium Confirmation Modal -->
+    @if (showDeleteModal()) {
+        <app-confirm-modal
+            title="Delete Product?"
+            message="Are you sure you want to remove this premium product? This action cannot be undone."
+            (confirmed)="confirmDelete()"
+            (cancelled)="cancelDelete()"
+        ></app-confirm-modal>
+    }
+</div>
