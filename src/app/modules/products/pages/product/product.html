@@ -87,15 +87,16 @@
                             </div>
                             <div class="price-now-row">
                                 <span class="price-now">₹{{ item.price }}</span>
-                                <span class="discount-chip">30% OFF</span>
+                                <span class="discount-chip">{{ item.discountPercentage }}% OFF</span>
                             </div>
                         </div>
-                        <div class="btn-group">
-                            <button class="btn-cart" (click)="onAddToCart(item)" title="Add to Cart">
+                        <div class="action-dock">
+                            <button class="btn-dock-cart" (click)="onAddToCart(item)" title="Add to Cart">
                                 <span class="material-icons">add_shopping_cart</span>
                             </button>
-                            <button class="btn-buy-now" (click)="onBuyNow(item)">
-                                <span class="material-icons btn-icon">bolt</span>
+                            <div class="dock-divider"></div>
+                            <button class="btn-dock-buy" (click)="onBuyNow(item)">
+                                <span class="material-icons">bolt</span>
                                 Buy Now
                             </button>
                         </div>
@@ -109,7 +110,7 @@
                 <h3>Nothing to show yet</h3>
                 <p>We couldn't find any products. Try refreshing to see the latest collection.</p>
                 <button class="btn-refresh" (click)="productInfo()">
-                     <span class="icon">↺</span> Retry Refresh
+                    <span class="icon">↺</span> Retry Refresh
                 </button>
             </div>
             }
@@ -119,11 +120,8 @@
 
     <!-- Premium Confirmation Modal -->
     @if (showDeleteModal()) {
-        <app-confirm-modal
-            title="Delete Product?"
-            message="Are you sure you want to remove this premium product? This action cannot be undone."
-            (confirmed)="confirmDelete()"
-            (cancelled)="cancelDelete()"
-        ></app-confirm-modal>
+    <app-confirm-modal title="Delete Product?"
+        message="Are you sure you want to remove this premium product? This action cannot be undone."
+        (confirmed)="confirmDelete()" (cancelled)="cancelDelete()"></app-confirm-modal>
     }
 </div>
