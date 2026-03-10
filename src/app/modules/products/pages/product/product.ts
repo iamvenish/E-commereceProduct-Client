@@ -11,6 +11,7 @@ export interface ProductItem {
   id?: number;
   productName?: string;
   price?: string | number;
+  originalPrice?: string | number;
   rating?: string | number;
   imageUrl?: string;
   description?: string;
@@ -67,16 +68,21 @@ export class Product implements OnInit {
         }
 
         // Robust Sorting and Mapping
-        products = products.map((p: any) => ({
-          ...p,
-          id: p.id || p.Id || p.productId,
-          productName: p.productName || p.ProductName || p.title || 'Unnamed Product',
-          price: p.price || p.Price || 0,
-          rating: p.rating || p.Rating || 0,
-          imageUrl: p.imageUrl || p.ImageUrl || p.image || '',
-          description: p.description || p.Description || '',
-          category: p.category || p.Category || 'General'
-        })).sort((a: any, b: any) => (Number(b.id) || 0) - (Number(a.id) || 0));
+        products = products.map((p: any) => {
+          const currentPrice = Number(p.price || p.Price || 0);
+          const originalPriceCalculated = currentPrice > 0 ? (currentPrice * 10 / 7).toFixed(2) : 0;
+          return {
+            ...p,
+            id: p.id || p.Id || p.productId,
+            productName: p.productName || p.ProductName || p.title || 'Unnamed Product',
+            price: currentPrice,
+            originalPrice: originalPriceCalculated,
+            rating: p.rating || p.Rating || 0,
+            imageUrl: p.imageUrl || p.ImageUrl || p.image || '',
+            description: p.description || p.Description || '',
+            category: p.category || p.Category || 'General'
+          };
+        }).sort((a: any, b: any) => (Number(b.id) || 0) - (Number(a.id) || 0));
 
         this.productDetails.set(products);
       },
@@ -131,5 +137,9 @@ export class Product implements OnInit {
 
   onAddToCart(item: ProductItem) {
     this.toastService.showSuccess(`${item.productName} added to cart`);
+  }
+
+  onBuyNow(item: ProductItem) {
+    this.toastService.showSuccess(`Proceeding to buy ${item.productName}`);
   }
 }

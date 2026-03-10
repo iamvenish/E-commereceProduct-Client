@@ -77,9 +77,28 @@
                     </div>
                     <h3>{{ item.productName || 'Unnamed Product' }}</h3>
                     <p class="description">{{ item.description || 'No description available for this product.' }}</p>
-                    <div class="meta">
-                        <span class="price">{{ item.price || '0.00' }}</span>
-                        <button class="btn-add" (click)="onAddToCart(item)">Add to Cart</button>
+
+                    <!-- Price + Buttons Row -->
+                    <div class="card-footer">
+                        <div class="price-section">
+                            <div class="price-mrp">
+                                <span class="mrp-label">MRP:</span>
+                                <span class="mrp-value">₹{{ item.originalPrice }}</span>
+                            </div>
+                            <div class="price-now-row">
+                                <span class="price-now">₹{{ item.price }}</span>
+                                <span class="discount-chip">30% OFF</span>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn-cart" (click)="onAddToCart(item)" title="Add to Cart">
+                                <span class="material-icons">add_shopping_cart</span>
+                            </button>
+                            <button class="btn-buy-now" (click)="onBuyNow(item)">
+                                <span class="material-icons btn-icon">bolt</span>
+                                Buy Now
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
