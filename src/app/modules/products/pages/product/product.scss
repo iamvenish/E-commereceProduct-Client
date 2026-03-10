@@ -468,68 +468,67 @@ $card-border: 1px solid rgba(255, 255, 255, 0.08);
           }
         }
       }
+    }
 
-      .action-dock {
+    .action-buttons-premium {
+      display: flex;
+      gap: 0.75rem;
+      width: 100%;
+      margin-top: 1.25rem;
+
+      .btn-premium-cart {
+        flex: 1;
         display: flex;
-        align-items: stretch;
-        background: #f8fafc;
-        border-radius: 6px;
-        height: 38px;
-        overflow: hidden;
-        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        justify-content: center;
+        align-items: center;
+        gap: 0.4rem;
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.4);
+        color: #60a5fa;
+        padding: 0.75rem 0;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 0.85rem;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+        .material-icons {
+          font-size: 1.15rem;
+        }
+
+        &:hover {
+          background: #3b82f6;
+          color: white;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+      }
+
+      .btn-premium-buy {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.4rem;
+        background: $primary-gradient;
+        border: none;
+        color: white;
+        padding: 0.75rem 0;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 0.85rem;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+        .material-icons {
+          font-size: 1.2rem;
+        }
 
         &:hover {
           transform: translateY(-2px);
-          box-shadow: 0 6px 14px rgba(255, 255, 255, 0.15);
-        }
-
-        .btn-dock-cart {
-          background: transparent;
-          border: none;
-          color: #0f172a;
-          width: 40px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          cursor: pointer;
-          transition: background 0.2s;
-
-          .material-icons {
-            font-size: 1.15rem;
-          }
-
-          &:hover {
-            background: rgba(0, 0, 0, 0.08);
-          }
-        }
-
-        .dock-divider {
-          width: 1px;
-          background: rgba(0, 0, 0, 0.15);
-          margin: 6px 0;
-        }
-
-        .btn-dock-buy {
-          background: transparent;
-          border: none;
-          color: #0f172a;
-          padding: 0 0.85rem 0 0.65rem;
-          font-weight: 700;
-          font-size: 0.85rem;
-          display: flex;
-          align-items: center;
-          gap: 3px;
-          cursor: pointer;
-          transition: background 0.2s;
-
-          .material-icons {
-            font-size: 1.1rem;
-          }
-
-          &:hover {
-            background: rgba(0, 0, 0, 0.08);
-          }
+          box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+          filter: brightness(1.1);
         }
       }
     }

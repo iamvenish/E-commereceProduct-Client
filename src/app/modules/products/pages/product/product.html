@@ -90,16 +90,17 @@
                                 <span class="discount-chip">{{ item.discountPercentage }}% OFF</span>
                             </div>
                         </div>
-                        <div class="action-dock">
-                            <button class="btn-dock-cart" (click)="onAddToCart(item)" title="Add to Cart">
-                                <span class="material-icons">add_shopping_cart</span>
-                            </button>
-                            <div class="dock-divider"></div>
-                            <button class="btn-dock-buy" (click)="onBuyNow(item)">
-                                <span class="material-icons">bolt</span>
-                                Buy Now
-                            </button>
-                        </div>
+                    </div>
+
+                    <div class="action-buttons-premium">
+                        <button class="btn-premium-cart" (click)="onAddToCart(item)">
+                            <span class="material-icons">shopping_cart</span>
+                            Add to Cart
+                        </button>
+                        <button class="btn-premium-buy" (click)="onBuyNow(item)">
+                            <span class="material-icons">bolt</span>
+                            Buy Now
+                        </button>
                     </div>
                 </div>
             </div>
