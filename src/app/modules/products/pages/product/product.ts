@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HandleService } from '../../../../services/handleServices/handle-service';
@@ -37,6 +37,16 @@ export class Product implements OnInit {
   isLoading = signal(false);
   showDeleteModal = signal(false);
   selectedProduct = signal<ProductItem | null>(null);
+  touchedCardId = signal<number | string | null>(null);
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    // If click is NOT inside a .product-card, close any open touched card
+    if (!target.closest('.product-card')) {
+      this.touchedCardId.set(null);
+    }
+  }
 
   ngOnInit() {
     this.loadUserData();
@@ -95,6 +105,13 @@ export class Product implements OnInit {
         this.toastService.showError('Failed to load products');
       }
     });
+  }
+
+  /** Toggle the touch-hover state on a card. Tapping the same card twice closes it. */
+  toggleCardTouch(item: ProductItem, event: MouseEvent) {
+    event.stopPropagation();
+    const id = item.id ?? item.productName ?? null;
+    this.touchedCardId.set(this.touchedCardId() === id ? null : id);
   }
 
   onAdd() {

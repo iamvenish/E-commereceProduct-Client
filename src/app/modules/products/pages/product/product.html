@@ -51,12 +51,15 @@
 
         <div class="product-grid">
             @for(item of productDetails(); track item.id || item.productName || $index) {
-            <div class="product-card">
+            <div class="product-card" [class.is-touched]="touchedCardId() === (item.id ?? item.productName)"
+                (click)="toggleCardTouch(item, $event)">
                 <div class="card-actions">
-                    <button class="action-btn edit" (click)="onEdit(item)" title="Edit Product">
+                    <button class="action-btn edit" (click)="onEdit(item); $event.stopPropagation()"
+                        title="Edit Product">
                         <span class="action-icon">✎</span>
                     </button>
-                    <button class="action-btn delete" (click)="onDelete(item)" title="Delete Product">
+                    <button class="action-btn delete" (click)="onDelete(item); $event.stopPropagation()"
+                        title="Delete Product">
                         <span class="action-icon">×</span>
                     </button>
                 </div>
