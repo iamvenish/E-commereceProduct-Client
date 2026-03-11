@@ -3,7 +3,7 @@
     <div class="bg-orb orb-2"></div>
 
     <div class="cart-container">
-        @if (cartItems().length > 0) {
+        @if (totalCount() > 0) {
         <!-- Header -->
         <div class="cart-header">
             <button class="btn-back" (click)="goBack()">
@@ -14,27 +14,7 @@
                 <span class="item-count">{{ totalCount() }} item{{ totalCount() !== 1 ? 's' : '' }}</span>
             </div>
         </div>
-        }
 
-        <!-- Empty State -->
-        @if (cartItems().length === 0) {
-        <div class="empty-cart-wrapper">
-            <div class="empty-cart">
-                <div class="empty-icon">
-                    <span class="material-icons">shopping_bag</span>
-                </div>
-                <h2>Your cart is empty</h2>
-                <p>Looks like you haven't added anything yet. Explore our latest premium products.</p>
-                <button class="btn-shop" (click)="goBack()">
-                    <span class="material-icons">shopping_basket</span>
-                    Continue Shopping
-                </button>
-            </div>
-        </div>
-        }
-
-        <!-- Cart Layout -->
-        @if (cartItems().length > 0) {
         <div class="cart-layout">
             <!-- Items List -->
             <div class="items-list">
@@ -101,6 +81,23 @@
                 </button>
                 <button class="btn-continue" (click)="goBack()">
                     <span class="material-icons">arrow_back</span>
+                    Continue Shopping
+                </button>
+            </div>
+        </div>
+        } @else {
+        <!-- Empty State Centered -->
+        <div class="empty-state-centered">
+            <div class="empty-card-glass">
+                <div class="icon-wrap">
+                    <span class="material-icons">shopping_bag</span>
+                    <div class="badge-zero">0</div>
+                </div>
+                <h2>Your cart is empty</h2>
+                <p>It seems you haven't added anything yet. Explore our premium collection and find something you'll
+                    love!</p>
+                <button class="btn-shop-premium" (click)="goBack()">
+                    <span class="material-icons">storefront</span>
                     Continue Shopping
                 </button>
             </div>
