@@ -1,11 +1,23 @@
 <div class="page-wrapper">
     <header class="main-header">
         <div class="header-content">
+
+            <!-- Brand -->
             <div class="brand">
                 <div class="logo-orb"></div>
                 <h1>Premium <span>Store</span></h1>
             </div>
 
+            <!-- Center: Cart prominent pill (visible always) -->
+            <button class="header-cart-btn" (click)="goToCart()" title="View Cart">
+                <span class="material-icons">shopping_cart</span>
+                <span class="header-cart-text">Cart</span>
+                @if (cartCount() > 0) {
+                <span class="header-cart-badge">{{ cartCount() > 99 ? '99+' : cartCount() }}</span>
+                }
+            </button>
+
+            <!-- Right: User + Actions -->
             <div class="header-right">
                 <div class="user-profile">
                     <div class="profile-info">
@@ -18,25 +30,19 @@
                 </div>
 
                 <div class="actions-group">
-                    <button class="icon-btn" (click)="productInfo()" [disabled]="isLoading()" title="Refresh Inventory">
+                    <button class="icon-btn" (click)="productInfo()" [disabled]="isLoading()" title="Refresh">
                         <span class="material-icons">refresh</span>
                     </button>
                     <button class="btn-add-new" (click)="onAdd()">
                         <span class="material-icons">add_circle</span>
                         <span>New Product</span>
                     </button>
-                    <button class="cart-icon-btn" (click)="goToCart()" title="View Cart">
-                        <span class="material-icons">shopping_cart</span>
-                        @if (cartCount() > 0) {
-                        <span class="cart-badge">{{ cartCount() > 99 ? '99+' : cartCount() }}</span>
-                        }
-                        <span class="cart-label">Cart</span>
-                    </button>
-                    <button class="logout-pill" (click)="onLogout()">
+                    <button class="logout-pill" (click)="onLogout()" title="Logout">
                         <span class="material-icons">logout</span>
                     </button>
                 </div>
             </div>
+
         </div>
     </header>
 
