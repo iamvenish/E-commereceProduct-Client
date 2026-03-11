@@ -177,67 +177,76 @@ $card-border: 1px solid rgba(255, 255, 255, 0.08);
 
   // Mobile & Tablet Responsiveness
   @media (max-width: 768px) {
-    padding: 0.75rem 1rem;
+    padding: 1rem;
 
     .header-content {
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: 1fr auto;
       gap: 1rem;
+      align-items: center;
     }
 
     .header-right {
-      width: 100%;
-      justify-content: space-between;
-      gap: 0.5rem;
+      display: contents;
+    }
+
+    .brand {
+      grid-column: 1 / 2;
+      grid-row: 1 / 2;
     }
 
     .user-profile {
+      grid-column: 2 / 3;
+      grid-row: 1 / 2;
       padding-right: 0;
       border-right: none;
 
       .profile-info {
-        text-align: left;
+        display: none; // Hide text to keep header clean, keep only avatar
       }
     }
 
     .actions-group {
-      gap: 0.75rem;
-    }
-
-    .btn-add-new {
-      padding: 0.6rem 1rem;
-
-      span:last-child {
-        display: none; // Hide "New Product" text on tablet
-      }
-    }
-  }
-
-  @media (max-width: 480px) {
-    .header-right {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 1rem;
-    }
-
-    .user-profile {
-      justify-content: flex-start;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      grid-column: 1 / 3;
+      grid-row: 2 / 3;
       width: 100%;
-    }
-
-    .actions-group {
+      display: flex;
       justify-content: space-between;
-      width: 100%;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.6rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
     }
 
     .btn-add-new {
       flex: 1;
       justify-content: center;
+      margin: 0 0.5rem;
+      padding: 0.75rem;
+      font-size: 0.95rem;
+      box-shadow: none;
 
       span:last-child {
-        display: inline; // Show "New Product" text on mobile since it spans width
+        display: inline; // ensure "New Product" text is visible
       }
+    }
+
+    .icon-btn,
+    .logout-pill {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 12px;
+    }
+
+    .logout-pill {
+      background: rgba(239, 68, 68, 0.15);
     }
   }
 }
