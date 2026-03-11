@@ -38,7 +38,6 @@ $card-border: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 2rem;
   }
 
   .brand {
@@ -75,39 +74,20 @@ $card-border: 1px solid rgba(255, 255, 255, 0.08);
   .user-profile {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding-right: 2rem;
+    gap: 0.75rem;
+    padding-right: 1.5rem;
     border-right: 1px solid rgba(255, 255, 255, 0.1);
 
-    .profile-info {
-      text-align: right;
-      display: flex;
-      flex-direction: column;
-
-      .user-name {
-        font-weight: 700;
-        font-size: 0.95rem;
-        color: #f1f5f9;
-        line-height: 1.2;
-      }
-
-      .user-role {
-        font-size: 0.75rem;
-        color: #64748b;
-        font-weight: 600;
-      }
-    }
-
     .avatar-circle {
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       background: $primary-gradient;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: white;
       box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
       cursor: pointer;
@@ -115,6 +95,25 @@ $card-border: 1px solid rgba(255, 255, 255, 0.08);
 
       &:hover {
         transform: scale(1.1) rotate(5deg);
+      }
+    }
+
+    .profile-info {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+
+      .user-name {
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #f1f5f9;
+        line-height: 1.2;
+      }
+
+      .user-role {
+        font-size: 0.7rem;
+        color: #64748b;
+        font-weight: 600;
       }
     }
   }
@@ -242,50 +241,34 @@ $card-border: 1px solid rgba(255, 255, 255, 0.08);
     padding: 1rem;
 
     .header-content {
-      display: grid;
-      grid-template-columns: 1fr auto auto;
-      gap: 1rem;
+      display: flex;
+      justify-content: space-between;
       align-items: center;
+      padding: 0.5rem 0;
     }
 
     .header-right {
-      display: contents;
-    }
-
-    .header-cart-btn {
-      grid-column: 2 / 3;
-      grid-row: 1 / 2;
-      padding: 0.5rem 0.8rem;
-      font-size: 0.85rem;
-
-      .header-cart-text {
-        display: none; // Icon only on mobile header top row
-      }
-
-      .material-icons {
-        font-size: 1.2rem;
-      }
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
 
     .brand {
-      grid-column: 1 / 2;
-      grid-row: 1 / 2;
+      h1 {
+        font-size: 1.25rem;
+      }
     }
 
     .user-profile {
-      grid-column: 3 / 4;
-      grid-row: 1 / 2;
-      padding-right: 0;
-      border-right: none;
+      border: none;
+      padding: 0;
 
       .profile-info {
-        display: none; // Hide text to keep header clean, keep only avatar
+        display: none;
       }
     }
 
     .actions-group {
-      grid-column: 1 / 3;
-      grid-row: 2 / 3;
       width: 100%;
       display: flex;
       justify-content: space-between;

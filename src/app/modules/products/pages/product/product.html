@@ -2,34 +2,33 @@
     <header class="main-header">
         <div class="header-content">
 
-            <!-- Brand -->
-            <div class="brand">
+            <!-- Left: Brand -->
+            <div class="brand" (click)="productInfo()" style="cursor: pointer;">
                 <div class="logo-orb"></div>
                 <h1>Premium <span>Store</span></h1>
             </div>
 
-            <!-- Center: Cart prominent pill (visible always) -->
-            <button class="header-cart-btn" (click)="goToCart()" title="View Cart">
-                <span class="material-icons">shopping_cart</span>
-                <span class="header-cart-text">Cart</span>
-                @if (cartCount() > 0) {
-                <span class="header-cart-badge">{{ cartCount() > 99 ? '99+' : cartCount() }}</span>
-                }
-            </button>
-
             <!-- Right: User + Actions -->
             <div class="header-right">
                 <div class="user-profile">
+                    <div class="avatar-circle">
+                        {{ getUserInitial() }}
+                    </div>
                     <div class="profile-info">
                         <span class="user-name">{{ userData()?.firstName || 'User' }}</span>
                         <span class="user-role">{{ userData()?.role || 'Member' }}</span>
                     </div>
-                    <div class="avatar-circle">
-                        {{ getUserInitial() }}
-                    </div>
                 </div>
 
                 <div class="actions-group">
+                    <button class="header-cart-btn" (click)="goToCart()" title="View Cart">
+                        <span class="material-icons">shopping_cart</span>
+                        <span class="header-cart-text">Cart</span>
+                        @if (cartCount() > 0) {
+                        <span class="header-cart-badge">{{ cartCount() > 99 ? '99+' : cartCount() }}</span>
+                        }
+                    </button>
+
                     <button class="icon-btn" (click)="productInfo()" [disabled]="isLoading()" title="Refresh">
                         <span class="material-icons">refresh</span>
                     </button>
