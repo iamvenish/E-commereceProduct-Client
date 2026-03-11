@@ -1,27 +1,15 @@
-<!doctype html>
-<html lang="en" data-beasties-container>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>Crud</title>
-  <base href="/E-commereceProduct-Client/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta charset="utf-8">
+    <title>Crud</title>
+    <script>
+        sessionStorage.setItem('redirect', window.location.pathname);
+        window.location.replace('https://iamvenish.github.io/E-commereceProduct-Client/');
+    </script>
+</head>
 
-  <script>
-    (function () {
-      var redirect = sessionStorage.getItem('redirect');
-      if (redirect) {
-        sessionStorage.removeItem('redirect');
-        window.history.replaceState(null, null, redirect);
-      }
-    })();
-  </script>
-
-<style>*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;margin:0;padding:0;background-color:#020617;overflow-x:hidden}</style><link rel="stylesheet" href="styles-6ME6HDG6.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles-6ME6HDG6.css"></noscript></head>
-
-<body>
-  <app-root></app-root>
-<script src="main-WWQ6JZE4.js" type="module"></script></body>
+<body></body>
 
 </html>
