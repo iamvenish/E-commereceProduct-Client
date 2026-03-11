@@ -38,6 +38,7 @@ $card-border: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 2rem;
   }
 
   .brand {
@@ -175,54 +176,64 @@ $card-border: 1px solid rgba(255, 255, 255, 0.08);
     }
   }
 
-  .cart-icon-btn {
+  .header-cart-btn {
     position: relative;
-    background: rgba(16, 185, 129, 0.1);
-    border: 1px solid rgba(16, 185, 129, 0.25);
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.2);
     color: #10b981;
-    padding: 0.55rem 1.1rem;
-    border-radius: 12px;
+    padding: 0.6rem 1.4rem;
+    border-radius: 100px; // Pill shape
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 0.45rem;
+    gap: 0.75rem;
     font-family: 'Outfit', sans-serif;
     font-weight: 700;
-    font-size: 0.9rem;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    font-size: 0.95rem;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 
     .material-icons {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
     }
 
-    .cart-label {
-      letter-spacing: 0.01em;
+    .header-cart-text {
+      letter-spacing: 0.02em;
     }
 
-    .cart-badge {
+    .header-cart-badge {
       position: absolute;
-      top: -8px;
-      right: -8px;
-      min-width: 20px;
-      height: 20px;
-      padding: 0 5px;
+      top: -6px;
+      right: -2px;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 6px;
       background: #ef4444;
       color: white;
-      border-radius: 10px;
-      font-size: 0.7rem;
+      border-radius: 11px;
+      font-size: 0.75rem;
       font-weight: 800;
       display: flex;
       align-items: center;
       justify-content: center;
       border: 2px solid #020617;
-      animation: badgePop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
+      animation: badgePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     &:hover {
       background: #10b981;
       color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+
+      .header-cart-badge {
+        transform: scale(1.1);
+      }
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.98);
     }
   }
 
@@ -232,7 +243,7 @@ $card-border: 1px solid rgba(255, 255, 255, 0.08);
 
     .header-content {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 1fr auto auto;
       gap: 1rem;
       align-items: center;
     }
@@ -241,13 +252,28 @@ $card-border: 1px solid rgba(255, 255, 255, 0.08);
       display: contents;
     }
 
+    .header-cart-btn {
+      grid-column: 2 / 3;
+      grid-row: 1 / 2;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.85rem;
+
+      .header-cart-text {
+        display: none; // Icon only on mobile header top row
+      }
+
+      .material-icons {
+        font-size: 1.2rem;
+      }
+    }
+
     .brand {
       grid-column: 1 / 2;
       grid-row: 1 / 2;
     }
 
     .user-profile {
-      grid-column: 2 / 3;
+      grid-column: 3 / 4;
       grid-row: 1 / 2;
       padding-right: 0;
       border-right: none;
@@ -286,8 +312,7 @@ $card-border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .icon-btn,
-    .logout-pill,
-    .cart-icon-btn {
+    .logout-pill {
       width: 44px;
       height: 44px;
       padding: 0;
@@ -299,16 +324,6 @@ $card-border: 1px solid rgba(255, 255, 255, 0.08);
 
     .logout-pill {
       background: rgba(239, 68, 68, 0.15);
-    }
-
-    .cart-icon-btn {
-      background: rgba(16, 185, 129, 0.15);
-
-      .cart-label {
-        display: none;
-      }
-
-      // icon-only on mobile
     }
   }
 }
