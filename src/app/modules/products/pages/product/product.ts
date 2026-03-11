@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { HandleService } from '../../../../services/handleServices/handle-service';
 import { AuthServices } from '../../../../services/authServices/auth-services';
 import { ToastService } from '../../../../services/toast/toast.service';
+import { CartService } from '../../../../services/cart/cart.service';
 import { ConfirmModal } from '../../../../shared/components/confirm-modal/confirm-modal';
 import { finalize } from 'rxjs';
 
@@ -31,6 +32,9 @@ export class Product implements OnInit {
   private authService = inject(AuthServices);
   private router = inject(Router);
   private toastService = inject(ToastService);
+  private cartService = inject(CartService);
+
+  cartCount = this.cartService.totalCount;
 
   productDetails = signal<ProductItem[]>([]);
   userData = signal<any>(null);
@@ -157,11 +161,16 @@ export class Product implements OnInit {
     this.selectedProduct.set(null);
   }
 
-  onAddToCart(item: ProductItem) {
-    this.toastService.showSuccess(`${item.productName} added to cart`);
+  onAddToCart(item: any) {
+    this.cartService.addToCart(item);
+    this.toastService.showSuccess(`🛒 ${item.productName} added to cart successfully!`);
   }
 
-  onBuyNow(item: ProductItem) {
+  goToCart() {
+    this.router.navigate(['/product/cart']);
+  }
+
+  onBuyNow(item: any) {
     this.toastService.showSuccess(`Proceeding to buy ${item.productName}`);
   }
 }

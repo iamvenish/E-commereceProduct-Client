@@ -25,6 +25,13 @@
                         <span class="material-icons">add_circle</span>
                         <span>New Product</span>
                     </button>
+                    <button class="cart-icon-btn" (click)="goToCart()" title="View Cart">
+                        <span class="material-icons">shopping_cart</span>
+                        @if (cartCount() > 0) {
+                        <span class="cart-badge">{{ cartCount() > 99 ? '99+' : cartCount() }}</span>
+                        }
+                        <span class="cart-label">Cart</span>
+                    </button>
                     <button class="logout-pill" (click)="onLogout()">
                         <span class="material-icons">logout</span>
                     </button>
