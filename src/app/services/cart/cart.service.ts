@@ -1,4 +1,5 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { HandleService } from '../handleServices/handle-service';
 
 export interface CartItem {
     id?: number;
@@ -14,6 +15,7 @@ export interface CartItem {
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
+    private handleService = inject(HandleService);
     private _items = signal<CartItem[]>([]);
 
     // Public read-only view
@@ -30,6 +32,8 @@ export class CartService {
     addToCart(product: any): void {
         const current = this._items();
         const existing = current.find(i => i.id === product.id);
+
+        // Local state update (immediate feedback)
         if (existing) {
             this._items.set(
                 current.map(i =>
@@ -38,6 +42,14 @@ export class CartService {
             );
         } else {
             this._items.set([...current, { ...product, quantity: 1 }]);
+        }
+
+        // Backend sync (background process)
+        if (product.id) {
+            this.handleService.addToCart(product, product.id.toString()).subscribe({
+                next: (res) => console.log('Added to backend cart:', res),
+                error: (err) => console.error('Failed to add to backend cart:', err)
+            });
         }
     }
 

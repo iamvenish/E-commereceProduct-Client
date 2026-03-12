@@ -28,4 +28,8 @@ export class HandleService {
   deleteProduct(id: string) {
     return this.http.delete(`${this.apiUrl}/api/deleteProduct/${id}`);
   }
+
+  addToCart(product: any, id: string) {
+    return this.http.post(`${this.apiUrl}/api/addToCart/${id}`, product);
+  }
 }
