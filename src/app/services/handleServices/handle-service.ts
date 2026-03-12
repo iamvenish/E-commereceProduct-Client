@@ -36,4 +36,12 @@ export class HandleService {
   getCartProducts() {
     return this.http.get<any[]>(`${this.apiUrl}/api/AddToCartProducts`);
   }
+
+  incrementCartItem(id: string) {
+    return this.http.post(`${this.apiUrl}/api/increment/${id}`, {});
+  }
+
+  decrementCartItem(id: string) {
+    return this.http.post(`${this.apiUrl}/api/decrement/${id}`, {});
+  }
 }

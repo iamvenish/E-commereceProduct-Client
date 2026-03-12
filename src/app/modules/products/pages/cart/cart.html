@@ -38,7 +38,11 @@
                     <div class="item-controls">
                         <div class="qty-stepper">
                             <button class="qty-btn" (click)="decrease(item)">
+                                @if (item.quantity > 1) {
                                 <span class="material-icons">remove</span>
+                                } @else {
+                                <span class="material-icons">delete</span>
+                                }
                             </button>
                             <span class="qty-value">{{ item.quantity }}</span>
                             <button class="qty-btn" (click)="increase(item)">

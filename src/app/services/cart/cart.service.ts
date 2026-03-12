@@ -2,7 +2,8 @@ import { Injectable, signal, computed, inject } from '@angular/core';
 import { HandleService } from '../handleServices/handle-service';
 
 export interface CartItem {
-    id?: number;
+    id?: number | string;
+    addToCartId?: string;
     productName?: string;
     price?: string | number;
     originalPrice?: string | number;
@@ -32,11 +33,11 @@ export class CartService {
     loadCart(): void {
         this.handleService.getCartProducts().subscribe({
             next: (response: any) => {
-                // The user provided structure: { message: "...", data: [...] }
                 const items = response?.data || response || [];
 
                 const mapped = items.map((p: any) => ({
                     id: p.id || p.productId || p.Id,
+                    addToCartId: p.addToCartId,
                     productName: p.addToCartProductName || p.productName || p.ProductName || 'Unnamed',
                     price: p.price || 0,
                     originalPrice: p.addToCartOriginalPrice || p.originalPrice || p.OriginalPrice || 0,
@@ -69,17 +70,61 @@ export class CartService {
         // Backend sync (background process)
         if (product.id) {
             this.handleService.addToCart(product, product.id.toString()).subscribe({
-                next: (res) => console.log('Added to backend cart:', res),
+                next: (res) => {
+                    console.log('Added to backend cart:', res);
+                    this.loadCart(); // Reload to get addToCartId for future operations
+                },
                 error: (err) => console.error('Failed to add to backend cart:', err)
             });
         }
     }
 
-    removeFromCart(id: number | undefined): void {
-        this._items.set(this._items().filter(i => i.id !== id));
+    incrementQuantity(item: CartItem): void {
+        const id = item.id;
+        // Immediate local update
+        this._items.set(
+            this._items().map(i => (i.id === id ? { ...i, quantity: i.quantity + 1 } : i))
+        );
+
+        // Backend sync
+        if (item.addToCartId) {
+            this.handleService.incrementCartItem(item.addToCartId).subscribe({
+                next: (res) => console.log('Incremented on backend:', res),
+                error: (err) => console.error('Failed to increment on backend:', err)
+            });
+        }
     }
 
-    updateQuantity(id: number | undefined, quantity: number): void {
+    decrementQuantity(item: CartItem): void {
+        const id = item.id;
+        if (item.quantity <= 1) {
+            this.removeFromCart(id);
+            // Here you might want a separate delete API call if increment/decrement doesn't handle removal
+            return;
+        }
+
+        // Immediate local update
+        this._items.set(
+            this._items().map(i => (i.id === id ? { ...i, quantity: i.quantity - 1 } : i))
+        );
+
+        // Backend sync
+        if (item.addToCartId) {
+            this.handleService.decrementCartItem(item.addToCartId).subscribe({
+                next: (res) => console.log('Decremented on backend:', res),
+                error: (err) => console.error('Failed to decrement on backend:', err)
+            });
+        }
+    }
+
+    removeFromCart(id: number | string | undefined): void {
+        this._items.set(this._items().filter(i => i.id !== id));
+        // Note: The user didn't specify a delete endpoint for cart items yet, 
+        // but typically it would be needed here.
+    }
+
+    updateQuantity(id: number | string | undefined, quantity: number): void {
+        // Legacy method, keep but redirect or update if needed
         if (quantity <= 0) {
             this.removeFromCart(id);
             return;

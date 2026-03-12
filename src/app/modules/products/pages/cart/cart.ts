@@ -31,11 +31,11 @@ export class Cart implements OnInit {
     });
 
     increase(item: any) {
-        this.cartService.updateQuantity(item.id, item.quantity + 1);
+        this.cartService.incrementQuantity(item);
     }
 
     decrease(item: any) {
-        this.cartService.updateQuantity(item.id, item.quantity - 1);
+        this.cartService.decrementQuantity(item);
     }
 
     remove(item: any) {
