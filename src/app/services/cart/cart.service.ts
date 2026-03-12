@@ -31,12 +31,19 @@ export class CartService {
 
     loadCart(): void {
         this.handleService.getCartProducts().subscribe({
-            next: (items) => {
-                // Ensure the items are in the correct format for the cart
-                const mapped = (items || []).map((p: any) => ({
-                    ...p,
+            next: (response: any) => {
+                // The user provided structure: { message: "...", data: [...] }
+                const items = response?.data || response || [];
+
+                const mapped = items.map((p: any) => ({
                     id: p.id || p.productId || p.Id,
-                    quantity: p.quantity || 1
+                    productName: p.addToCartProductName || p.productName || p.ProductName || 'Unnamed',
+                    price: p.price || 0,
+                    originalPrice: p.addToCartOriginalPrice || p.originalPrice || p.OriginalPrice || 0,
+                    discountPercentage: p.addToCartDiscountOff || p.discountOff || p.percentage || 0,
+                    quantity: p.addToCartQuantity || p.quantity || 1,
+                    imageUrl: p.imageUrl || p.ImageUrl || '',
+                    category: p.category || p.Category || ''
                 }));
                 this._items.set(mapped);
             },
