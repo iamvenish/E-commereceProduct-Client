@@ -32,4 +32,8 @@ export class HandleService {
   addToCart(product: any, id: string) {
     return this.http.post(`${this.apiUrl}/api/AddToCartProducts/${id}`, product);
   }
+
+  getCartProducts() {
+    return this.http.get<any[]>(`${this.apiUrl}/api/AddToCartProducts`);
+  }
 }

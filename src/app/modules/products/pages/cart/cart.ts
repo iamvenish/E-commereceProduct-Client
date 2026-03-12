@@ -1,4 +1,4 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CartService } from '../../../../services/cart/cart.service';
@@ -10,13 +10,17 @@ import { CartService } from '../../../../services/cart/cart.service';
     templateUrl: './cart.html',
     styleUrl: './cart.scss',
 })
-export class Cart {
+export class Cart implements OnInit {
     private cartService = inject(CartService);
     private router = inject(Router);
 
     cartItems = this.cartService.items;
     totalCount = this.cartService.totalCount;
     totalPrice = this.cartService.totalPrice;
+
+    ngOnInit(): void {
+        this.cartService.loadCart();
+    }
 
     savedAmount = computed(() => {
         return this.cartService.items().reduce((sum, item) => {

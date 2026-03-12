@@ -16,7 +16,7 @@ export interface CartItem {
 @Injectable({ providedIn: 'root' })
 export class CartService {
     private handleService = inject(HandleService);
-    private _items = signal<CartItem[]>(this.loadFromStorage());
+    private _items = signal<CartItem[]>([]);
 
     // Public read-only view
     items = this._items.asReadonly();
@@ -29,31 +29,35 @@ export class CartService {
         this._items().reduce((sum, item) => sum + Number(item.price) * item.quantity, 0)
     );
 
-    private loadFromStorage(): CartItem[] {
-        const saved = localStorage.getItem('cart_items');
-        return saved ? JSON.parse(saved) : [];
-    }
-
-    private saveToStorage(items: CartItem[]): void {
-        localStorage.setItem('cart_items', JSON.stringify(items));
+    loadCart(): void {
+        this.handleService.getCartProducts().subscribe({
+            next: (items) => {
+                // Ensure the items are in the correct format for the cart
+                const mapped = (items || []).map((p: any) => ({
+                    ...p,
+                    id: p.id || p.productId || p.Id,
+                    quantity: p.quantity || 1
+                }));
+                this._items.set(mapped);
+            },
+            error: (err) => console.error('Failed to load cart from backend:', err)
+        });
     }
 
     addToCart(product: any): void {
         const current = this._items();
         const existing = current.find(i => i.id === product.id);
-        let updated: CartItem[];
 
         // Local state update (immediate feedback)
         if (existing) {
-            updated = current.map(i =>
-                i.id === product.id ? { ...i, quantity: i.quantity + 1 } : i
+            this._items.set(
+                current.map(i =>
+                    i.id === product.id ? { ...i, quantity: i.quantity + 1 } : i
+                )
             );
         } else {
-            updated = [...current, { ...product, quantity: 1 }];
+            this._items.set([...current, { ...product, quantity: 1 }]);
         }
-
-        this._items.set(updated);
-        this.saveToStorage(updated);
 
         // Backend sync (background process)
         if (product.id) {
@@ -65,9 +69,7 @@ export class CartService {
     }
 
     removeFromCart(id: number | undefined): void {
-        const updated = this._items().filter(i => i.id !== id);
-        this._items.set(updated);
-        this.saveToStorage(updated);
+        this._items.set(this._items().filter(i => i.id !== id));
     }
 
     updateQuantity(id: number | undefined, quantity: number): void {
@@ -75,13 +77,12 @@ export class CartService {
             this.removeFromCart(id);
             return;
         }
-        const updated = this._items().map(i => (i.id === id ? { ...i, quantity } : i));
-        this._items.set(updated);
-        this.saveToStorage(updated);
+        this._items.set(
+            this._items().map(i => (i.id === id ? { ...i, quantity } : i))
+        );
     }
 
     clearCart(): void {
         this._items.set([]);
-        localStorage.removeItem('cart_items');
     }
 }
