@@ -30,6 +30,6 @@ export class HandleService {
   }
 
   addToCart(product: any, id: string) {
-    return this.http.post(`${this.apiUrl}/api/addToCart/${id}`, product);
+    return this.http.post(`${this.apiUrl}/api/AddToCartProducts/${id}`, product);
   }
 }
