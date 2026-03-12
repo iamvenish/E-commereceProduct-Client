@@ -43,8 +43,8 @@ export class CartService {
                     originalPrice: p.addToCartOriginalPrice || p.originalPrice || p.OriginalPrice || 0,
                     discountPercentage: p.addToCartDiscountOff || p.discountOff || p.percentage || 0,
                     quantity: p.addToCartQuantity || p.quantity || 1,
-                    imageUrl: p.imageUrl || p.ImageUrl || '',
-                    category: p.category || p.Category || ''
+                    imageUrl: p.addToCartImage || p.addToCartImageUrl || p.imageUrl || p.ImageUrl || p.image || p.Image || '',
+                    category: p.addToCartCategory || p.category || p.Category || ''
                 }));
                 this._items.set(mapped);
             },
