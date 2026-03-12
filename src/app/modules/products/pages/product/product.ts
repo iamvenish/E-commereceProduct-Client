@@ -9,7 +9,7 @@ import { ConfirmModal } from '../../../../shared/components/confirm-modal/confir
 import { finalize } from 'rxjs';
 
 export interface ProductItem {
-  id?: number;
+  id?: number | string;
   productName?: string;
   price?: string | number;
   originalPrice?: string | number;
@@ -86,9 +86,10 @@ export class Product implements OnInit {
         products = products.map((p: any) => {
           const currentPrice = Number(p.price || p.Price || 0);
 
-          // Use DiscountOff or percentage or discountPercentage directly from backend
-          const discountVal = p.DiscountOff || p.percentage || p.discountPercentage || 0;
-          const origPriceVal = p.OriginalPrice || p.originalPrice || p.mrp || p.MRP || 0;
+          // Match backend fields exactly from screenshot: 
+          // "discountOff", "orginalPrice" (with typo), "price"
+          const discountVal = p.discountOff ?? p.DiscountOff ?? p.percentage ?? p.discountPercentage ?? 0;
+          const origPriceVal = p.orginalPrice ?? p.originalPrice ?? p.OriginalPrice ?? p.mrp ?? p.MRP ?? 0;
 
           return {
             ...p,
@@ -102,7 +103,11 @@ export class Product implements OnInit {
             description: p.description || p.Description || '',
             category: p.category || p.Category || 'General'
           };
-        }).sort((a: any, b: any) => (Number(b.id) || 0) - (Number(a.id) || 0));
+        }).sort((a: any, b: any) => {
+          const idA = a.id?.toString() || '';
+          const idB = b.id?.toString() || '';
+          return idB.localeCompare(idA);
+        });
 
         this.productDetails.set(products);
       },
