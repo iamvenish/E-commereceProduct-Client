@@ -85,17 +85,18 @@ export class Product implements OnInit {
         // Robust Sorting and Mapping
         products = products.map((p: any) => {
           const currentPrice = Number(p.price || p.Price || 0);
-          const backendOriginalPrice = Number(p.originalPrice || p.OriginalPrice || p.mrp || p.MRP || 0);
-          const originalPrice = backendOriginalPrice > currentPrice ? backendOriginalPrice : (currentPrice > 0 ? (currentPrice * 10 / 7).toFixed(2) : 0);
-          const discountPercentage = (Number(originalPrice) > currentPrice) ? Math.round(((Number(originalPrice) - currentPrice) / Number(originalPrice)) * 100) : 0;
+
+          // Use DiscountOff or percentage or discountPercentage directly from backend
+          const discountVal = p.DiscountOff || p.percentage || p.discountPercentage || 0;
+          const origPriceVal = p.OriginalPrice || p.originalPrice || p.mrp || p.MRP || 0;
 
           return {
             ...p,
             id: p.id || p.Id || p.productId,
             productName: p.productName || p.ProductName || p.title || 'Unnamed Product',
             price: currentPrice,
-            originalPrice: Number(originalPrice).toFixed(2),
-            discountPercentage: discountPercentage,
+            originalPrice: Number(origPriceVal).toFixed(2),
+            discountPercentage: Number(discountVal),
             rating: p.rating || p.Rating || 0,
             imageUrl: p.imageUrl || p.ImageUrl || p.image || '',
             description: p.description || p.Description || '',
