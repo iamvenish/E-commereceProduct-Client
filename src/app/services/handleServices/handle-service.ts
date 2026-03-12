@@ -38,10 +38,10 @@ export class HandleService {
   }
 
   incrementCartItem(id: string) {
-    return this.http.post(`${this.apiUrl}/api/increment/${id}`, {});
+    return this.http.patch(`${this.apiUrl}/api/increment/${id}`, {});
   }
 
   decrementCartItem(id: string) {
-    return this.http.post(`${this.apiUrl}/api/decrement/${id}`, {});
+    return this.http.patch(`${this.apiUrl}/api/decrement/${id}`, {});
   }
 }
