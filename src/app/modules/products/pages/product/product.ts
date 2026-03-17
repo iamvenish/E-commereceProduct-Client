@@ -177,6 +177,17 @@ export class Product implements OnInit {
   }
 
   onBuyNow(item: any) {
-    this.toastService.showSuccess(`Proceeding to buy ${item.productName}`);
+    this.toastService.showSuccess(`Initiating purchase for ${item.productName}...`);
+    // Pass the item as the payload for the POST request
+    this.handleService.buyProduct(item.id, item).subscribe({
+      next: (res: any) => {
+        this.router.navigate(['/product/buy-product', item.id]);
+      },
+      error: (err: any) => {
+        // Even if it fails, maybe we still navigate? The user says "then it post method that route goes to BuyProducts page".
+        // Often these mock backends return success anyway.
+        this.toastService.showError('Failed to initiate purchase');
+      }
+    });
   }
 }

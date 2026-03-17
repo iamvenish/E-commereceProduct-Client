@@ -29,6 +29,10 @@ export class HandleService {
     return this.http.delete(`${this.apiUrl}/api/deleteProduct/${id}`);
   }
 
+  buyProduct(id: string, payload: any) {
+    return this.http.post(`${this.apiUrl}/api/BuyProducts/${id}`, payload);
+  }
+
   addToCart(product: any, id: string) {
     return this.http.post(`${this.apiUrl}/api/AddToCartProducts/${id}`, product);
   }

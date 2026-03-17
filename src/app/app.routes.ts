@@ -7,6 +7,7 @@ import { Logout } from './modules/auth/pages/logout/logout';
 import { Cart } from './modules/products/pages/cart/cart';
 import { authGuard } from './guards/auth.guard';
 import { guestGuard } from './guards/guest.guard';
+import { BuyProducts } from './modules/products/pages/buy-products/buy-products';
 
 export const routes: Routes = [
     {
@@ -42,6 +43,10 @@ export const routes: Routes = [
             {
                 path: 'cart',
                 component: Cart
+            },
+            {
+                path: 'buy-product/:id',
+                component: BuyProducts
             }
         ]
     },

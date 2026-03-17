@@ -1,0 +1,226 @@
+<div class="checkout-wrapper">
+    <header class="checkout-header">
+        <div class="header-content">
+            <button class="btn-back" (click)="goBack()" title="Back to Store">
+                <span class="material-icons">arrow_back</span>
+                Back
+            </button>
+            <h1>Complete Purchase</h1>
+        </div>
+    </header>
+
+    <div class="checkout-container">
+        @if (isLoading()) {
+        <div class="loading-state">
+            <div class="skeleton-content"></div>
+        </div>
+        } @else if (productDetails()) {
+        
+        <div class="checkout-grid">
+            <!-- Left Side: Form Details -->
+            <div class="checkout-form-section">
+                
+                <!-- Product Review Card (Mobile) -->
+                <div class="mobile-product-summary">
+                    <img [src]="productDetails()?.imageUrl" alt="Product Image">
+                    <div class="summary-details">
+                        <h3>{{ productDetails()?.productName }}</h3>
+                        <p class="price">₹{{ productDetails()?.price }}</p>
+                    </div>
+                </div>
+
+                <div class="form-card shipping-details">
+                    <h2><span class="step-num">1</span> Shipping Information</h2>
+                    <div class="form-group row">
+                        <div class="field">
+                            <label>Mobile Number</label>
+                            <input type="tel" [(ngModel)]="mobileNumber" placeholder="Enter 10-digit number" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Store Address / Delivery Address</label>
+                        <textarea [(ngModel)]="storeAddress" rows="3" placeholder="Enter full address..."></textarea>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" id="saveAdd" [(ngModel)]="saveAddress">
+                        <label for="saveAdd">Save this address for future purchases</label>
+                    </div>
+                </div>
+
+                <div class="form-card payment-options">
+                    <h2><span class="step-num">2</span> Payment Method</h2>
+                    
+                    <div class="accordion">
+                        
+                        <!-- Premium Store Pay Balance -->
+                        <div class="accordion-item" [class.active]="activePaymentMethod() === 'premium_balance'">
+                            <div class="accordion-header" (click)="togglePaymentMethod('premium_balance')">
+                                <div class="header-left">
+                                    <span class="material-icons method-icon">account_balance_wallet</span>
+                                    <span>PremiumStore Pay Balance</span>
+                                </div>
+                                <span class="material-icons expand-icon">expand_more</span>
+                            </div>
+                            <div class="accordion-content" *ngIf="activePaymentMethod() === 'premium_balance'">
+                                <div class="wallet-balance">
+                                    <p class="balance-label">Available Balance</p>
+                                    <h3 class="balance-amount">₹{{ premiumBalance() }}.00</h3>
+                                    @if(premiumBalance() < (getNumberPrice(productDetails()?.price))) {
+                                        <p class="error-text">Insufficient balance. Please add funds or select another method.</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Debit Card -->
+                        <div class="accordion-item" [class.active]="activePaymentMethod() === 'debit_card'">
+                            <div class="accordion-header" (click)="togglePaymentMethod('debit_card')">
+                                <div class="header-left">
+                                    <span class="material-icons method-icon">credit_card</span>
+                                    <span>Debit Card</span>
+                                </div>
+                                <span class="material-icons expand-icon">expand_more</span>
+                            </div>
+                            <div class="accordion-content" *ngIf="activePaymentMethod() === 'debit_card'">
+                                <div class="card-form">
+                                    <div class="form-group">
+                                        <label>Cardholder Name</label>
+                                        <input type="text" [(ngModel)]="debitCard.holderName" placeholder="Name on card">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Card Number</label>
+                                        <input type="text" [(ngModel)]="debitCard.cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group half">
+                                            <label>Expiry Date</label>
+                                            <input type="text" [(ngModel)]="debitCard.expiry" placeholder="MM/YY" maxlength="5">
+                                        </div>
+                                        <div class="form-group half">
+                                            <label>CVV</label>
+                                            <input type="password" [(ngModel)]="debitCard.cvv" placeholder="123" maxlength="3">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Credit Card -->
+                        <div class="accordion-item" [class.active]="activePaymentMethod() === 'credit_card'">
+                            <div class="accordion-header" (click)="togglePaymentMethod('credit_card')">
+                                <div class="header-left">
+                                    <span class="material-icons method-icon">payment</span>
+                                    <span>Credit Card</span>
+                                </div>
+                                <span class="material-icons expand-icon">expand_more</span>
+                            </div>
+                            <div class="accordion-content" *ngIf="activePaymentMethod() === 'credit_card'">
+                                <div class="card-form">
+                                    <div class="form-group">
+                                        <label>Cardholder Name</label>
+                                        <input type="text" [(ngModel)]="creditCard.holderName" placeholder="Name on card">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Card Number</label>
+                                        <input type="text" [(ngModel)]="creditCard.cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group half">
+                                            <label>Expiry Date</label>
+                                            <input type="text" [(ngModel)]="creditCard.expiry" placeholder="MM/YY" maxlength="5">
+                                        </div>
+                                        <div class="form-group half">
+                                            <label>CVV</label>
+                                            <input type="password" [(ngModel)]="creditCard.cvv" placeholder="123" maxlength="3">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- UPI -->
+                        <div class="accordion-item" [class.active]="activePaymentMethod() === 'upi'">
+                            <div class="accordion-header" (click)="togglePaymentMethod('upi')">
+                                <div class="header-left">
+                                    <span class="material-icons method-icon">qr_code_scanner</span>
+                                    <span>UPI</span>
+                                </div>
+                                <span class="material-icons expand-icon">expand_more</span>
+                            </div>
+                            <div class="accordion-content" *ngIf="activePaymentMethod() === 'upi'">
+                                <div class="form-group upi-group">
+                                    <label>Enter UPI ID / Key</label>
+                                    <input type="text" [(ngModel)]="upiId" placeholder="example@upi">
+                                    <p class="hint">A payment request will be sent to this UPI ID.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="action-section hide-on-desktop">
+                    <button class="btn-confirm-purchase" [disabled]="isPurchasing()" (click)="confirmPurchase()">
+                        @if(isPurchasing()) {
+                            <span class="spinner"></span> Processing...
+                        } @else {
+                            Pay ₹{{ productDetails()?.price }} & Place Order
+                        }
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Side: Order Summary -->
+            <div class="checkout-summary-section">
+                <div class="summary-card">
+                    <h2>Order Summary</h2>
+                    
+                    <div class="product-preview">
+                        <img [src]="productDetails()?.imageUrl" alt="Product Image">
+                        <div class="prod-info">
+                            <h4>{{ productDetails()?.productName }}</h4>
+                            <p class="qty">Qty: 1</p>
+                        </div>
+                    </div>
+
+                    <div class="price-breakdown">
+                        <div class="row">
+                            <span>Item Total</span>
+                            <span>₹{{ productDetails()?.originalPrice || productDetails()?.price }}</span>
+                        </div>
+                        @if(hasDiscount()) {
+                            <div class="row discount">
+                                <span>Product Discount</span>
+                                <span>- ₹{{ getFormattedDiscount() }}</span>
+                            </div>
+                        }
+                        <div class="row">
+                            <span>Delivery Fee</span>
+                            <span class="free">FREE</span>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="row total">
+                            <span>Total Payable</span>
+                            <span>₹{{ productDetails()?.price }}</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-confirm-purchase hide-on-mobile" [disabled]="isPurchasing()" (click)="confirmPurchase()">
+                        @if(isPurchasing()) {
+                            <span class="spinner"></span> Processing...
+                        } @else {
+                            Pay ₹{{ productDetails()?.price }} & Place Order
+                        }
+                    </button>
+
+                    <div class="secure-badge">
+                        <span class="material-icons">security</span>
+                        Safe and Secure Payments. 100% Authentic Products.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        }
+    </div>
+</div>
