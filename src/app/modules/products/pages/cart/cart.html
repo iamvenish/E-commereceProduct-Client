@@ -79,9 +79,13 @@
                     <span>Total</span>
                     <span>₹{{ totalPrice().toFixed(2) }}</span>
                 </div>
-                <button class="btn-checkout">
-                    <span class="material-icons">bolt</span>
-                    Proceed to Checkout
+                <button class="btn-checkout" [disabled]="isCheckingOut" (click)="checkout()">
+                    @if(isCheckingOut) {
+                        <span class="spinner-small"></span> Processing...
+                    } @else {
+                        <span class="material-icons">bolt</span>
+                        Proceed to Checkout
+                    }
                 </button>
                 <button class="btn-continue" (click)="goBack()">
                     <span class="material-icons">arrow_back</span>
