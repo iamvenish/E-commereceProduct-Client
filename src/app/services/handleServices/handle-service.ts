@@ -44,4 +44,8 @@ export class HandleService {
   decrementCartItem(id: string) {
     return this.http.patch(`${this.apiUrl}/api/decrement/${id}`, {});
   }
+
+  deleteCartItem(id: string) {
+    return this.http.delete(`${this.apiUrl}/api/DeleteToCartProduct/${id}`);
+  }
 }

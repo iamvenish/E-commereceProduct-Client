@@ -98,8 +98,7 @@ export class CartService {
     decrementQuantity(item: CartItem): void {
         const id = item.id;
         if (item.quantity <= 1) {
-            this.removeFromCart(id);
-            // Here you might want a separate delete API call if increment/decrement doesn't handle removal
+            this.removeFromCart(item.addToCartId || item.id);
             return;
         }
 
@@ -118,9 +117,25 @@ export class CartService {
     }
 
     removeFromCart(id: number | string | undefined): void {
-        this._items.set(this._items().filter(i => i.id !== id));
-        // Note: The user didn't specify a delete endpoint for cart items yet, 
-        // but typically it would be needed here.
+        const itemToRemove = this._items().find(i => i.id === id || i.addToCartId === id);
+        const finalId = itemToRemove?.addToCartId || id;
+
+        // Immediate local update
+        this._items.set(this._items().filter(i => i.id !== id && i.addToCartId !== id));
+
+        // Backend sync
+        if (finalId) {
+            this.handleService.deleteCartItem(finalId.toString()).subscribe({
+                next: (res) => {
+                    console.log('Removed from backend cart:', res);
+                },
+                error: (err) => {
+                    console.error('Failed to remove from backend cart:', err);
+                    // Optionally: reload cart if sync fails to ensure consistency
+                    // this.loadCart();
+                }
+            });
+        }
     }
 
     updateQuantity(id: number | string | undefined, quantity: number): void {

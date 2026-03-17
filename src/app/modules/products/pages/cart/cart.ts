@@ -39,7 +39,7 @@ export class Cart implements OnInit {
     }
 
     remove(item: any) {
-        this.cartService.removeFromCart(item.id);
+        this.cartService.removeFromCart(item.addToCartId || item.id);
     }
 
     goBack() {

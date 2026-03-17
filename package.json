@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "ng build && copy public\\404.html dist\\crud\\browser\\404.html && npx angular-cli-ghpages --dir=dist/crud/browser && node fix-404.js"
+    "deploy": "ng build && cp public/404.html dist/crud/browser/404.html && npx angular-cli-ghpages --dir=dist/crud/browser && node fix-404.js"
   },
   "prettier": {
     "printWidth": 100,
