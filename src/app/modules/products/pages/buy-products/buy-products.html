@@ -1,35 +1,30 @@
-<div class="checkout-wrapper">
-    <header class="checkout-header">
-        <div class="header-content">
-            <button class="btn-back" (click)="goBack()" title="Back to Store">
-                <span class="material-icons">arrow_back</span>
-                Back
-            </button>
-            <h1>Complete Purchase</h1>
-        </div>
-    </header>
+<div class="checkout-page">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
 
     <div class="checkout-container">
+        
+        <div class="checkout-header">
+            <button class="btn-back" (click)="goBack()">
+                <span class="material-icons">arrow_back</span>
+            </button>
+            <div class="title-group">
+                <h1>Complete <span>Purchase</span></h1>
+            </div>
+        </div>
+
         @if (isLoading()) {
         <div class="loading-state">
-            <div class="skeleton-content"></div>
+            <div class="spinner"></div>
+            <p>Loading details...</p>
         </div>
         } @else if (productDetails()) {
         
-        <div class="checkout-grid">
+        <div class="checkout-layout">
             <!-- Left Side: Form Details -->
             <div class="checkout-form-section">
                 
-                <!-- Product Review Card (Mobile) -->
-                <div class="mobile-product-summary">
-                    <img [src]="productDetails()?.imageUrl" alt="Product Image">
-                    <div class="summary-details">
-                        <h3>{{ productDetails()?.productName }}</h3>
-                        <p class="price">₹{{ productDetails()?.price }}</p>
-                    </div>
-                </div>
-
-                <div class="form-card shipping-details">
+                <div class="glass-card form-card">
                     <h2><span class="step-num">1</span> Shipping Information</h2>
                     <div class="form-group row">
                         <div class="field">
@@ -47,7 +42,7 @@
                     </div>
                 </div>
 
-                <div class="form-card payment-options">
+                <div class="glass-card form-card">
                     <h2><span class="step-num">2</span> Payment Method</h2>
                     
                     <div class="accordion">
@@ -98,7 +93,7 @@
                                         </div>
                                         <div class="form-group half">
                                             <label>CVV</label>
-                                            <input type="password" [(ngModel)]="debitCard.cvv" placeholder="123" maxlength="3">
+                                            <input type="password" [(ngModel)]="debitCard.cvv" placeholder="***" maxlength="3">
                                         </div>
                                     </div>
                                 </div>
@@ -131,7 +126,7 @@
                                         </div>
                                         <div class="form-group half">
                                             <label>CVV</label>
-                                            <input type="password" [(ngModel)]="creditCard.cvv" placeholder="123" maxlength="3">
+                                            <input type="password" [(ngModel)]="creditCard.cvv" placeholder="***" maxlength="3">
                                         </div>
                                     </div>
                                 </div>
@@ -158,22 +153,12 @@
 
                     </div>
                 </div>
-
-                <div class="action-section hide-on-desktop">
-                    <button class="btn-confirm-purchase" [disabled]="isPurchasing()" (click)="confirmPurchase()">
-                        @if(isPurchasing()) {
-                            <span class="spinner"></span> Processing...
-                        } @else {
-                            Pay ₹{{ productDetails()?.price }} & Place Order
-                        }
-                    </button>
-                </div>
             </div>
 
             <!-- Right Side: Order Summary -->
             <div class="checkout-summary-section">
-                <div class="summary-card">
-                    <h2>Order Summary</h2>
+                <div class="glass-card summary-card">
+                    <h3>Order Summary</h3>
                     
                     <div class="product-preview">
                         <img [src]="productDetails()?.imageUrl" alt="Product Image">
@@ -189,37 +174,51 @@
                             <span>₹{{ productDetails()?.originalPrice || productDetails()?.price }}</span>
                         </div>
                         @if(hasDiscount()) {
-                            <div class="row discount">
+                            <div class="row discount-row">
                                 <span>Product Discount</span>
                                 <span>- ₹{{ getFormattedDiscount() }}</span>
                             </div>
                         }
                         <div class="row">
                             <span>Delivery Fee</span>
-                            <span class="free">FREE</span>
+                            <span class="free-tag">FREE</span>
                         </div>
-                        <div class="divider"></div>
-                        <div class="row total">
+                        <div class="summary-total">
                             <span>Total Payable</span>
-                            <span>₹{{ productDetails()?.price }}</span>
+                            <span class="total-amount">₹{{ productDetails()?.price }}</span>
                         </div>
                     </div>
 
-                    <button class="btn-confirm-purchase hide-on-mobile" [disabled]="isPurchasing()" (click)="confirmPurchase()">
+                    <button class="btn-checkout" [disabled]="isPurchasing()" (click)="confirmPurchase()">
                         @if(isPurchasing()) {
-                            <span class="spinner"></span> Processing...
+                            <span class="spinner-small"></span> Processing...
                         } @else {
-                            Pay ₹{{ productDetails()?.price }} & Place Order
+                            <span class="material-icons">lock</span>
+                            Pay ₹{{ productDetails()?.price }} securely
                         }
                     </button>
 
                     <div class="secure-badge">
-                        <span class="material-icons">security</span>
-                        Safe and Secure Payments. 100% Authentic Products.
+                        <span class="material-icons">verified_user</span>
+                        Safe and Secure Payments.
                     </div>
                 </div>
             </div>
 
+        </div>
+        } @else {
+        <div class="empty-state-centered">
+            <div class="empty-card-glass">
+                <div class="icon-wrap error-wrap">
+                    <span class="material-icons">error_outline</span>
+                </div>
+                <h2>Product Not Found</h2>
+                <p>We couldn't load the details for this product.</p>
+                <button class="btn-shop-premium" (click)="goBack()">
+                    <span class="material-icons">arrow_back</span>
+                    Return to Shop
+                </button>
+            </div>
         </div>
         }
     </div>
