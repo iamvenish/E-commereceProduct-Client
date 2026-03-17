@@ -12,9 +12,9 @@ const cacheDir = path.join(
 const content = fs.readFileSync(path.join('public', '404.html'), 'utf8');
 fs.writeFileSync(path.join(cacheDir, '404.html'), content);
 
-execSync(`cd /d ${cacheDir} && git add 404.html && git commit -m "fix: correct 404.html" && git push`, {
+execSync(`cd ${cacheDir} && git add 404.html && git commit -m "fix: correct 404.html" && git push`, {
     stdio: 'inherit',
-    shell: 'cmd.exe'
+    shell: '/bin/bash'
 });
 
 console.log('✅ 404.html fixed and pushed!');
